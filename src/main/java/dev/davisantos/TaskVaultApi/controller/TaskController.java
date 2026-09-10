@@ -1,11 +1,13 @@
 package dev.davisantos.TaskVaultApi.controller;
 
+import dev.davisantos.TaskVaultApi.dto.TaskActionDTO;
 import dev.davisantos.TaskVaultApi.dto.TaskRequestDTO;
 import dev.davisantos.TaskVaultApi.dto.TaskResponseDTO;
 import dev.davisantos.TaskVaultApi.service.TaskService;
 import dev.davisantos.TaskVaultApi.utils.GenericController;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -45,5 +47,20 @@ public class TaskController implements GenericController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{id}/assign")
+    public ResponseEntity<TaskResponseDTO> assignTask(@PathVariable Long id, @RequestBody TaskActionDTO dto, Authentication authentication) {
+        return ResponseEntity.ok(taskService.assignTask(id,dto.ownerId(),authentication));
+    }
+
+    @PostMapping("/{id}/take")
+    public ResponseEntity<TaskResponseDTO> takeTask(@PathVariable Long id, Authentication authentication) {
+        return ResponseEntity.ok(taskService.takeTask(id, authentication));
+    }
+
+    @PostMapping("/{id}/complete")
+    public ResponseEntity<TaskResponseDTO> completeTask(@PathVariable Long id, Authentication authentication) {
+        return ResponseEntity.ok(taskService.completeTask(id, authentication));
     }
 }
