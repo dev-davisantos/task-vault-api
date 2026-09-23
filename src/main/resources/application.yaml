@@ -15,3 +15,7 @@ spring:
         format_sql: true
     hibernate:
       ddl-auto: update
+
+jwt:
+  expiration: ${JWT_EXPIRATION:900000}
+  key: ${JWT_KEY:G0V3fI3j8xJv7Kq4yY2dQm8LrP6aNtW5Xz9HsBcEfUiJkLmNoPqRsTuVwXyZa1bC}
