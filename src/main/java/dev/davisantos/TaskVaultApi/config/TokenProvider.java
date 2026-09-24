@@ -68,4 +68,9 @@ public class TokenProvider {
                 .parseSignedClaims(token) // Validate the token (If it was created with our key, and if it's not expired), and return the claims
                 .getPayload(); // Collect the payLoad from the claims
     }
+
+    // Method used to get the username,
+    public String getUsername(String token) {
+        return getClaims(token).getSubject(); //Collect the subject by the claims
+    }
 }
