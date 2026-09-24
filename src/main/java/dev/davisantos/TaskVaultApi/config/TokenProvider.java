@@ -64,7 +64,7 @@ public class TokenProvider {
     private Claims getClaims(String token) {
         return Jwts.parser()// Call the JWT parser
                 .verifyWith(getSigningKey()) // Set our signing key, as verifier of token's key
-                .build() // I don't know why of this
+                .build()
                 .parseSignedClaims(token) // Validate the token (If it was created with our key, and if it's not expired), and return the claims
                 .getPayload(); // Collect the payLoad from the claims
     }

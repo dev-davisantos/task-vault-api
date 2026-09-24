@@ -33,7 +33,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // Verify if the header is not empty, and if begins with a bearer (Like every JWT token)
         if (StringUtils.hasText(authorizationHeader) && authorizationHeader.startsWith("Bearer ")) {
 
-            // Collect just the token, ignoring the first 7 words (the bearer that begins in the header)
+            // Collect just the token, ignoring the first 7 letters (the bearer that begins in the header)
             String token = authorizationHeader.substring(7);
 
             //Use our tokenProvider to validate the token
