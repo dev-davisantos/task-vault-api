@@ -3,6 +3,7 @@ package dev.davisantos.TaskVaultApi.config;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +13,7 @@ import javax.crypto.SecretKey;
 import java.util.Date;
 
 @Component
+@Getter
 public class TokenProvider {
     /*
      Class used to learn the process to create a token manually
