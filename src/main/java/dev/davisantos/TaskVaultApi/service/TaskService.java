@@ -11,6 +11,7 @@ import dev.davisantos.TaskVaultApi.exception.InvalidActionException;
 import dev.davisantos.TaskVaultApi.exception.NotFoundException;
 import dev.davisantos.TaskVaultApi.mapper.TaskMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,6 +57,7 @@ public class TaskService {
                 .toList();
     }
 
+
     public TaskResponseDTO updateTask(Long taskId, TaskRequestDTO dto) {
         TaskEntity task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new NotFoundException("This Task could not be found"));
@@ -67,10 +69,12 @@ public class TaskService {
         return taskMapper.toDto(task);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteTask(Long id){
         taskRepository.deleteById(id);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     public TaskResponseDTO assignTask(
             Long taskId,
             Long ownerId,
@@ -96,6 +100,7 @@ public class TaskService {
         return taskMapper.toDto(task);
     }
 
+    @PreAuthorize("!hasRole('ROLE_TECHNICIAN')")
     public TaskResponseDTO takeTask(Long taskId, Authentication authentication){
         TaskEntity task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new NotFoundException("This Task could not be found"));
@@ -107,6 +112,7 @@ public class TaskService {
         return  taskMapper.toDto(task);
     }
 
+    //Will become a method for authorization
     public TaskResponseDTO completeTask(Long taskId, Authentication authentication){
         TaskEntity task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new NotFoundException("This Task could not be found"));

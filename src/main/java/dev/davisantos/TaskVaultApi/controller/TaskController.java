@@ -7,6 +7,7 @@ import dev.davisantos.TaskVaultApi.service.TaskService;
 import dev.davisantos.TaskVaultApi.utils.GenericController;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,17 +22,17 @@ public class TaskController implements GenericController {
     private final TaskService taskService;
 
     @GetMapping
-    public ResponseEntity<List<TaskResponseDTO>> getAllUsers() {
+    public ResponseEntity<List<TaskResponseDTO>> getAllTasks() {
         return ResponseEntity.ok(taskService.getAllTasks());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TaskResponseDTO> getUserById(@PathVariable Long id) {
+    public ResponseEntity<TaskResponseDTO> getTaskById(@PathVariable Long id) {
         return ResponseEntity.ok(taskService.getTaskById(id));
     }
 
     @PostMapping
-    public ResponseEntity<TaskResponseDTO> createUser(@RequestBody TaskRequestDTO dto) {
+    public ResponseEntity<TaskResponseDTO> createTask(@RequestBody TaskRequestDTO dto) {
         TaskResponseDTO response =  taskService.createTask(dto);
 
         URI uri = buildUri(response.id());
@@ -40,12 +41,12 @@ public class TaskController implements GenericController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TaskResponseDTO> updateUser(@PathVariable Long id, @RequestBody TaskRequestDTO dto) {
+    public ResponseEntity<TaskResponseDTO> updateTask(@PathVariable Long id, @RequestBody TaskRequestDTO dto) {
         return ResponseEntity.ok(taskService.updateTask(id, dto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
         return ResponseEntity.noContent().build();
     }
 
