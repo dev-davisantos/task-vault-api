@@ -8,8 +8,10 @@ import dev.davisantos.TaskVaultApi.database.repository.UserRepository;
 import dev.davisantos.TaskVaultApi.dto.LoginRequestDTO;
 import dev.davisantos.TaskVaultApi.dto.TokenResponseDTO;
 import dev.davisantos.TaskVaultApi.dto.UserRequestDTO;
+import dev.davisantos.TaskVaultApi.dto.UserResponseDTO;
 import dev.davisantos.TaskVaultApi.exception.InvalidActionException;
 import dev.davisantos.TaskVaultApi.exception.NotFoundException;
+import dev.davisantos.TaskVaultApi.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,6 +31,7 @@ public class AuthService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
+    private final UserMapper userMapper;
 
     public TokenResponseDTO login(LoginRequestDTO dto){
         Authentication authentication = authenticationManager.authenticate(
@@ -40,7 +43,7 @@ public class AuthService {
         return new TokenResponseDTO(token, tokenProvider.getExpirationTime());
     }
 
-    public void register(UserRequestDTO dto){
+    public UserResponseDTO register(UserRequestDTO dto){
         if(userRepository.existsByUsername(dto.username())){
             throw new InvalidActionException("This username already exists, please try another username");
         }
@@ -56,7 +59,7 @@ public class AuthService {
                 .roles(roles)
                 .build();
 
-        userRepository.save(user);
+        return userMapper.toDto(userRepository.save(user));
     }
 
 }

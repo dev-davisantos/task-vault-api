@@ -46,7 +46,9 @@ public class TaskController implements GenericController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
+        taskService.deleteTask(id);
         return ResponseEntity.noContent().build();
     }
 
