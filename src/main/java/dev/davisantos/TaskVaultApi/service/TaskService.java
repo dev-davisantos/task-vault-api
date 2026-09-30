@@ -57,7 +57,7 @@ public class TaskService {
                 .toList();
     }
 
-
+    @PreAuthorize("hasRole('ADMIN') or @authz.canUpdate(authentication, #taskId)")
     public TaskResponseDTO updateTask(Long taskId, TaskRequestDTO dto) {
         TaskEntity task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new NotFoundException("This Task could not be found"));
@@ -112,7 +112,7 @@ public class TaskService {
         return  taskMapper.toDto(task);
     }
 
-    //Will become a method for authorization
+    @PreAuthorize("hasAnyRole('ADMIN', 'TECHNICIAN')")
     public TaskResponseDTO completeTask(Long taskId, Authentication authentication){
         TaskEntity task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new NotFoundException("This Task could not be found"));
